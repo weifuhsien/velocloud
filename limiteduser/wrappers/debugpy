@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# ===== Allowed arguments =====
+VALID_ARGS=("--path" "--bgp_view_sum" "--bgpd_dump" "--health" "--ifaces" "--routes" "--uptime")
+VALID_HA_ARGS=("lstate" "verp")
+
+# ===== Path to the Python debug script =====
+DEBUG_SCRIPT="/opt/vc/bin/debug.py"
+
+# ===== Arguments to pass to the Python script =====
+PY_ARGS=()
+
+# ===== Begin parsing user input arguments =====
+while [[ $# -gt 0 ]]; do
+    key="$1"
+
+    case "$key" in
+        --path|--bgp_view_sum|--bgpd_dump|--health|--ifaces|--routes|--uptime)
+            PY_ARGS+=("$key")
+            ;;
+        --ha)
+            shift
+            if [[ $# -eq 0 ]]; then
+                echo "Missing sub-argument for --ha (expected: lstate or verp)"
+                exit 1
+            fi
+            if [[ " ${VALID_HA_ARGS[*]} " == *" $1 "* ]]; then
+                PY_ARGS+=("--ha" "$1")
+            else
+                echo "Invalid sub-argument for --ha: $1. Allowed: lstate or verp"
+                exit 1
+            fi
+            ;;
+        *)
+            echo "Invalid argument: $key"
+            echo "Allowed arguments: --path, --bgp_view_sum, --bgpd_dump, --ha lstate|verp, --health, --ifaces, --routes, --uptime"
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+# ===== Execute the Python debug script with validated arguments =====
+exec /usr/bin/sudo "$DEBUG_SCRIPT" "${PY_ARGS[@]}"
