@@ -3,7 +3,7 @@
 set -e
 
 if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <USERNAME> <USER_HOME> <RESTRICTED_BIN>"
+    echo "Usage: $0 <USERNAME>"
     exit 1
 fi
 
