@@ -12,12 +12,12 @@ WRAPPER="$2"
 USER_HOME="/home/$USERNAME"
 RESTRICTED_BIN="$USER_HOME/bin"
 
-# Create a wrapper
+# Deploy a wrapper
 echo "[+] Creating wrapper script..."
-sudo cp -p wrappers/debugpy $WRAPPER
+sudo cp -p "wrappers/$WRAPPER" "$RESTRICTED_BIN/$WRAPPER"
 
-sudo chmod +x "$WRAPPER"
-sudo chown "$USERNAME:$USERNAME" "$WRAPPER"
+sudo chmod +x "$RESTRICTED_BIN/$WRAPPER"
+sudo chown "$USERNAME:$USERNAME" "$RESTRICTED_BIN/$WRAPPER"
 
 # Configure .bash_profile and .bashrc limit PATH
 echo "[+] Configuring environment..."
@@ -37,9 +37,4 @@ SUDOERS_FILE="/etc/sudoers.d/$USERNAME"
 echo "$SUDOERS_LINE" | sudo tee "$SUDOERS_FILE" > /dev/null
 sudo chmod 440 "$SUDOERS_FILE"
 
-echo "[+] Adding debug commands in $RESTRICTED_BIN..."
-cd $RESTRICTED_BIN
-ln -s /sbin/ifconfig
-ln -s /usr/bin/ifstat
-ln -s /usr/bin/vtysh
-ln -s /opt/vc/sbin/edged
+echo "Deploy wrapper $WRAPPER complete!"
