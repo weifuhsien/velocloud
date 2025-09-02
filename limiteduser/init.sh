@@ -14,8 +14,8 @@ WRAPPER="debugpy"
 ./scripts/deploy-wrappers.sh "$USERNAME" "$WRAPPER" 
 
 # Deploy a wrapper netinfo
-# WRAPPER="netinfo"
-# ./scripts/deploy-wrappers.sh "$USERNAME" "$WRAPPER"
+WRAPPER="netinfo"
+./scripts/deploy-wrappers.sh "$USERNAME" "$WRAPPER"
 
 # Finish
 echo ""

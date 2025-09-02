@@ -1,0 +1,63 @@
+#!/bin/bash
+
+NET_PATH="/sys/class/net"
+PROC_INET6="/proc/net/if_inet6"
+CONFIG_FILE="/etc/config/network"
+
+function show_interface_info() {
+  local iface="$1"
+  local path="$NET_PATH/$iface"
+
+  # Interface
+  if [[ ! -d "$path" ]]; then
+    echo "Interface $iface does not exist."
+    return
+  fi
+
+  echo "=== Interface: $iface ==="
+
+  # State
+  [[ -f "$path/operstate" ]] && echo "State      : $(cat "$path/operstate")"
+
+  # MAC
+  [[ -f "$path/address" ]] && echo "MAC Addr   : $(cat "$path/address")"
+
+  # MTU
+  [[ -f "$path/mtu" ]] && echo "MTU        : $(cat "$path/mtu")"
+
+  # IPv4 
+  local net_iface="${iface#br-}"
+  local ip_list=$(awk -v target="$net_iface" '
+    $1 == "config" && $2 == "interface" && $3 ~ ("'\''"target"'\''") {
+      in_block = 1; next
+    }
+    in_block && $1 == "config" { exit }
+    in_block && ($1 == "option" || $1 == "list") && $2 == "ipaddr" {
+      gsub(/'\''/, "", $3)
+      printf "%s ", $3
+    }
+  ' "$CONFIG_FILE")
+
+  echo "IPv4 Addr  : ${ip_list:-N/A}"
+
+  # IPv6
+  ipv6=$(awk -v iface="$iface" '
+    $1 ~ /^[0-9a-f]{32}/ {
+      gsub(/../, "&:", $1)
+      sub(/:$/, "", $1)
+      print $1, $NF
+    }
+  ' "$PROC_INET6" | awk -v i="$iface" '$2 == i {print $1}')
+  echo "IPv6 Addr  : ${ipv6:-N/A}"
+
+  echo
+}
+
+# main
+if [[ -n "$1" ]]; then
+  show_interface_info "$1"
+else
+  for iface in $(ls "$NET_PATH"); do
+    show_interface_info "$iface"
+  done
+fi
