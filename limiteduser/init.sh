@@ -13,9 +13,9 @@ DEBUG_SCRIPT="/opt/vc/sbin/debug.py"
 WRAPPER="debugpy"
 ./scripts/deploy-wrappers.sh "$USERNAME" "$WRAPPER" 
 
-# Deploy a wrapper netinfo
-# WRAPPER="netinfo"
-# ./scripts/deploy-wrappers.sh "$USERNAME" "$WRAPPER"
+# Deploy a wrapper cmdlist
+WRAPPER="cmdlist"
+./scripts/deploy-wrappers.sh "$USERNAME" "$WRAPPER" 
 
 # Finish
 echo ""

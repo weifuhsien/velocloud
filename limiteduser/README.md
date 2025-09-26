@@ -14,6 +14,15 @@ This project provides a secure way to create a restricted Linux user account tha
 
 ---
 
+## Wrapper lists
+
+| Wrapper Name | Purpose |
+|-------------|---------|
+| `debugpy` | Run `debug.py` wrapper script (restricted options only) |
+| `cmdlist` | Show allowed commands and their descriptions |
+
+---
+
 ## Prerequisites
 
 - Root or sudo access

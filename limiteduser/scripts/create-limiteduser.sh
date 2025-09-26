@@ -50,8 +50,6 @@ ln -s /bin/cat
 ln -s /bin/date
 ln -s /bin/grep
 ln -s /bin/ls
-ln -s /usr/bin/awk
-ln -s /usr/bin/cut
 ln -s /usr/bin/ifstat
 ln -s /usr/bin/top
 ln -s /usr/bin/uptime
