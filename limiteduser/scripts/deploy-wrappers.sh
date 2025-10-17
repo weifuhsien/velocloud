@@ -19,22 +19,4 @@ sudo cp -p "wrappers/$WRAPPER" "$RESTRICTED_BIN/$WRAPPER"
 sudo chmod +x "$RESTRICTED_BIN/$WRAPPER"
 sudo chown "$USERNAME:$USERNAME" "$RESTRICTED_BIN/$WRAPPER"
 
-# Configure .bash_profile and .bashrc limit PATH
-echo "[+] Configuring environment..."
-sudo tee "$USER_HOME/.bash_profile" > /dev/null <<EOF
-export PATH=$RESTRICTED_BIN
-EOF
-
-sudo tee "$USER_HOME/.bashrc" > /dev/null <<EOF
-export PATH=$RESTRICTED_BIN
-EOF
-
-sudo chown "$USERNAME:$USERNAME" "$USER_HOME/.bash_profile" "$USER_HOME/.bashrc"
-
-echo "[+] Creating sudoers entry..."
-SUDOERS_LINE="$USERNAME ALL=(ALL) NOPASSWD: ALL"
-SUDOERS_FILE="/etc/sudoers.d/$USERNAME"
-echo "$SUDOERS_LINE" | sudo tee "$SUDOERS_FILE" > /dev/null
-sudo chmod 440 "$SUDOERS_FILE"
-
 echo "Deploy wrapper $WRAPPER complete!"
