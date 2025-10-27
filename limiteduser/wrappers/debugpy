@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# ===== Allowed arguments =====
+VALID_ARGS=("--path" "--health" "--ifaces" "--routes" "--uptime")
+VALID_HA_ARGS=("lstate" "verp")
+
+# ===== Path to the Python debug script =====
+DEBUG_SCRIPT="/opt/vc/bin/debug.py"
+
+# ===== Arguments to pass to the Python script =====
+PY_ARGS=()
+
+# ===== Function: print help =====
+print_help() {
+    cat <<EOF
+Usage: debugpy [OPTIONS]
+
+Options:
+  --path                Dump the current path stats
+  --health              Dump health information
+  --ifaces              Show interfaces
+  --routes              Dump the unified vc route table
+  --uptime              Dump process uptime
+  --ha [verp | lstate]  Dump the HA verp state of the edge or the interfacemac/ip related information
+  --help                Show this help message and exit
+
+Examples:
+  debugpy --health
+  debugpy --ha lstate
+EOF
+}
+
+# ===== If no arguments provided, show help =====
+if [[ $# -eq 0 ]]; then
+    print_help
+    exit 0
+fi
+
+# ===== Begin parsing user input arguments =====
+while [[ $# -gt 0 ]]; do
+    key="$1"
+
+    case "$key" in
+        --help)
+            print_help
+            exit 0
+            ;;
+        --path|--health|--ifaces|--routes|--uptime)
+            PY_ARGS+=("$key")
+            ;;
+        --ha)
+            shift
+            if [[ $# -eq 0 ]]; then
+                echo "Missing sub-argument for --ha (expected: lstate or verp)"
+                exit 1
+            fi
+            if [[ " ${VALID_HA_ARGS[*]} " == *" $1 "* ]]; then
+                PY_ARGS+=("--ha" "$1")
+            else
+                echo "Invalid sub-argument for --ha: $1. Allowed: lstate or verp"
+                exit 1
+            fi
+            ;;
+        *)
+            echo "Invalid argument: $key"
+            echo "Use --help for usage information."
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+# ===== Execute the Python debug script with validated arguments =====
+exec /usr/bin/sudo "$DEBUG_SCRIPT" "${PY_ARGS[@]}"
