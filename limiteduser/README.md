@@ -41,7 +41,7 @@ This project provides a secure way to create a restricted Linux user account tha
 2. Upload to the VCE using SFTP
    ```bash
    sftp <username>@<host IP>
-   put velocloud-init.zip
+   put velocloud-main.zip
    bye
    ```
 
@@ -52,15 +52,15 @@ This project provides a secure way to create a restricted Linux user account tha
 
 4. Unzip and run the setup script
    ```bash
-   unzip velocloud-init.zip
-   cd velocloud/limiteduser
+   unzip velocloud-main.zip
+   cd velocloud-main/limiteduser
    ./init.sh
    ```
 
 ## Cleanup
 - To remove the setup, run:
     ```bash
-    cd velocloud/limiteduser
+    cd velocloud-main/limiteduser
    ./uninstall.sh
    ```
 

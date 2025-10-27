@@ -6,13 +6,16 @@ Allowed commands:
 
 cat       - concatenate files and print on the standard output
 date      - print or set the system date and time
-debugpy   - Run debug.py wrapper script (restricted options only)
 edged     - Display Edge service version and information.
 grep      - print lines that match patterns
 ifstat    - handy utility to read network interface statistics
 ls        - list directory contents
-tcpdump   - dump traffic on a network
 uptime    - Tell how long the system has been running.
 whoami    - print effective userid
+
+Allowed wrappers commands:
+
+debugpy   - Run debug.py wrapper script (restricted options only)
 cmdlist   - show allowed commands and their descriptions
+
 EOF
