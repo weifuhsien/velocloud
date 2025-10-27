@@ -54,7 +54,6 @@ ln -s /usr/bin/ifstat
 ln -s /usr/bin/top
 ln -s /usr/bin/uptime
 ln -s /usr/bin/whoami
-ln -s /usr/sbin/tcpdump
 ln -s /opt/vc/sbin/edged
 
 echo "Create a limiteduser $USERNAME complete!"
